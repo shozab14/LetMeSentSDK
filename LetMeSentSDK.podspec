@@ -24,7 +24,8 @@ Pod::Spec.new do |s|
   s.swift_version  = '5.0'
   s.ios.deployment_target = '11.0'
   
-  s.source_files = 'General/**/*'
+  s.source_files =  'LetMeSentSDK/Classes/**/*'
+  #'General/**/*'
   #'LetMeSentSDK/Classes/**/*'
   
   

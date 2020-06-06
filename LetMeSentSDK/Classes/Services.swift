@@ -6,3 +6,10 @@
 //
 
 import Foundation
+public class Services{
+    public init(){}
+    
+    public func printLog(){
+        print("LetMeSentSDK Says HEllo")
+    }
+}
