@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'LetMeSentSDK_Example' do
+  pod 'LetMeSentSDK', :path => '../'
+
+  target 'LetMeSentSDK_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
