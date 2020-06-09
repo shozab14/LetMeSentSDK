@@ -12,13 +12,17 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-       let sdk = Services()
-        sdk.printLog()
+        LetMeSentSdkController.shared.delegate = self
+       
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-
+    
+    @IBAction func paymentAction(_ sender: Any) {
+         LetMeSentSdkController.shared.presentPayment()
+    }
+    
 }
 
