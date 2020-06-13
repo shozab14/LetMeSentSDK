@@ -6,10 +6,12 @@
 //
 
 import Foundation
+
+
 public class LetMeSentSdkController{
     public init(){}
     public static let shared = LetMeSentSdkController()
-    public var delegate : UIViewController?
+    public weak var delegate : UIViewController?
   
       
 }
@@ -18,14 +20,34 @@ public class LetMeSentSdkController{
 
 
 
-
-
-
-
-
-
 //MARK:-  LetMeSentSdkController Extention
 extension LetMeSentSdkController{
+    
+    private func loginApiCall(){
+        guard let url = URL(string: "https://letmesent.com/api/login") else {
+            print("Invalid URL")
+            return
+        }
+    let request = URLRequest(url: url)
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let data = data {
+                if let decodedResponse = try? JSONDecoder().decode(Response.self, from: data) {
+                    // we have good data – go back to the main thread
+                    DispatchQueue.main.async {
+                        // update our UI
+                        self.results = decodedResponse.results
+                    }
+
+                    // everything is good, so we can exit
+                    return
+                }
+            }
+
+            // if we're still here it means there was a problem
+            print("Fetch failed: \(error?.localizedDescription ?? "Unknown error")")
+        }.resume()
+    }
+    
     private func errorAlert(msg:String){
               let alert = UIAlertController(title: "Alert", message: msg, preferredStyle: .alert)
               alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
