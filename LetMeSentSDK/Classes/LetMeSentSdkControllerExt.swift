@@ -208,6 +208,7 @@ extension LetMeSentSdkController{
             if let data = data {
                 if let decodedResponse = try? JSONDecoder().decode(PaymentBase.self, from: data) {
                     
+               
                     if let response =  decodedResponse.success,response.message == "Success"{
                         self.controllerAlert(msg: "Payment Completed")
                         completion(decodedResponse,nil)
@@ -216,7 +217,7 @@ extension LetMeSentSdkController{
                         DispatchQueue.main.async {
                           self.hideActivityIndicator()
                         }
-                        self.controllerAlert(msg: "Payment error try again!")
+                        self.controllerAlert(msg: decodedResponse.success?.message ?? "")
                         completion(nil,decodedResponse.success?.message)
                     }
                     return
