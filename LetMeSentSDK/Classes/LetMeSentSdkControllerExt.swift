@@ -216,7 +216,7 @@ extension LetMeSentSdkController{
     
     private func controllerAlert(msg:String){
         DispatchQueue.main.async {[weak self] in
-            let alert = UIAlertController(title: "Alert", message: msg, preferredStyle: .alert)
+            let alert = UIAlertController(title: "LetMeSent", message: msg, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
             }))
             self?.delegate?.present(alert, animated: true, completion: nil)
