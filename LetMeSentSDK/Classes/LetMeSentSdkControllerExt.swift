@@ -208,7 +208,7 @@ extension LetMeSentSdkController{
             if let data = data {
                 if let decodedResponse = try? JSONDecoder().decode(PaymentBase.self, from: data) {
                     
-                    if let response =  decodedResponse.success,response.status == 200{
+                    if let response =  decodedResponse.success,response.message == "Success"{
                         self.controllerAlert(msg: "Payment Completed")
                         completion(decodedResponse,nil)
                         
