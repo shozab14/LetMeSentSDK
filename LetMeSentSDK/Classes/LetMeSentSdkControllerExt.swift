@@ -33,12 +33,12 @@ extension LetMeSentSdkController{
         }
         request.httpMethod = "POST"
         request.httpBody = httpBody
+        self.showActivityIndicator()
         URLSession.shared.dataTask(with: request) { data, response, error in
+            
             if let data = data {
                 if let decodedResponse = try? JSONDecoder().decode(SDKLoginBase.self, from: data) {
-                    DispatchQueue.main.async {
-                      self.hideActivityIndicator()
-                    }
+                    
                     if let token =  decodedResponse.response?.token {
                         self.headers.updateValue(token, forKey: "Authorization-Token")
                         self.verification { (response, error) in
@@ -47,13 +47,18 @@ extension LetMeSentSdkController{
                         completion(decodedResponse.response,nil)
                         
                     }else{
+                        DispatchQueue.main.async {
+                          self.hideActivityIndicator()
+                        }
                         completion(nil,decodedResponse.response?.message)
                     }
                     
                     return
                 }
             }
-            
+            DispatchQueue.main.async {
+              self.hideActivityIndicator()
+            }
             completion(nil,error?.localizedDescription)
             print("Fetch failed: \(error?.localizedDescription ?? "Unknown error")")
         }.resume()
@@ -86,12 +91,12 @@ extension LetMeSentSdkController{
         }
         request.httpMethod = "POST"
         request.httpBody = httpBody
+        
         URLSession.shared.dataTask(with: request) { data, response, error in
+            
             if let data = data {
                 if let decodedResponse = try? JSONDecoder().decode(VerifyBase.self, from: data) {
-                    DispatchQueue.main.async {
-                      self.hideActivityIndicator()
-                    }
+                    
                     if let accessToken =  decodedResponse.data?.access_token{
                         self.headers.updateValue("Bearer" + " " + accessToken, forKey: "Authorization")
                         
@@ -101,13 +106,18 @@ extension LetMeSentSdkController{
                         completion(decodedResponse,nil)
                         
                     }else{
+                        DispatchQueue.main.async {
+                          self.hideActivityIndicator()
+                        }
                         completion(nil,decodedResponse.message)
                     }
                     return
                 }
             }
             
-            
+            DispatchQueue.main.async {
+              self.hideActivityIndicator()
+            }
             completion(nil,error?.localizedDescription)
             print("Fetch failed: \(error?.localizedDescription ?? "Unknown error")")
         }.resume()
@@ -139,9 +149,7 @@ extension LetMeSentSdkController{
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let data = data {
                 if let decodedResponse = try? JSONDecoder().decode(TransactionInfoBase.self, from: data) {
-                    DispatchQueue.main.async {
-                      self.hideActivityIndicator()
-                    }
+                    
                     if let approvedUrl =  decodedResponse.data?.approvedUrl{
                         
                         if let startIndex  = approvedUrl.range(of: "grant_id=")?.upperBound , let endIndex = approvedUrl.range(of: "&")?.lowerBound {
@@ -150,7 +158,9 @@ extension LetMeSentSdkController{
                                 let token = approvedUrl[startIndex...].description
                                 print(token)
                                 self.payment(grant_id: grant_id, paymentToken: token) { (response, message) in
-                                    
+                                    DispatchQueue.main.async {
+                                      self.hideActivityIndicator()
+                                    }
                                 }
                                 
                             }
@@ -158,12 +168,17 @@ extension LetMeSentSdkController{
                         completion(decodedResponse,nil)
                         
                     }else{
+                        DispatchQueue.main.async {
+                          self.hideActivityIndicator()
+                        }
                         completion(nil,decodedResponse.message)
                     }
                     return
                 }
             }
-            
+            DispatchQueue.main.async {
+              self.hideActivityIndicator()
+            }
             completion(nil,error?.localizedDescription)
             print("Fetch failed: \(error?.localizedDescription ?? "Unknown error")")
         }.resume()
@@ -189,17 +204,18 @@ extension LetMeSentSdkController{
         request.httpMethod = "POST"
         request.httpBody = httpBody
         URLSession.shared.dataTask(with: request) { data, response, error in
+            
             if let data = data {
                 if let decodedResponse = try? JSONDecoder().decode(PaymentBase.self, from: data) {
-                    DispatchQueue.main.async {
-                      self.hideActivityIndicator()
-                    }
                     
                     if let response =  decodedResponse.success,response.status == 200{
                         self.controllerAlert(msg: "Payment Completed")
                         completion(decodedResponse,nil)
                         
                     }else{
+                        DispatchQueue.main.async {
+                          self.hideActivityIndicator()
+                        }
                         self.controllerAlert(msg: "Payment error try again!")
                         completion(nil,decodedResponse.success?.message)
                     }
@@ -207,7 +223,9 @@ extension LetMeSentSdkController{
                 }
             }
             
-            
+            DispatchQueue.main.async {
+              self.hideActivityIndicator()
+            }
             completion(nil,error?.localizedDescription)
             print("Fetch failed: \(error?.localizedDescription ?? "Unknown error")")
         }.resume()
@@ -251,7 +269,7 @@ extension LetMeSentSdkController{
                 self.controllerAlert(msg: "Password seems empty.")
                 
             }else{
-                self.showActivityIndicator()
+                
                 self.loginApiCall(email: emailTxt, password: passwordTxt) {(response, error) in
                     if let err = error{
                         self.hideActivityIndicator()
