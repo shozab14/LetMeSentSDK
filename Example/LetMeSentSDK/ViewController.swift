@@ -13,8 +13,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         LetMeSentSdkController.shared.delegate = self
-        LetMeSentSdkController.shared.clientID = "TrH51u26rtvXOPJPsYOfNV5TMdUZqY"
-        LetMeSentSdkController.shared.clientSecret = "KqGwBKtiEVyQfWyJv59HYF1EqdM13pkM0yyNKcgSAcOWTw4C4ipI25NsXkGWfZrq20ZJDdOanH693tRbtC0g5khZIpwokno0IBEj"
+        LetMeSentSdkController.shared.clientID = "XXXXXXXXXXXXX"
+        LetMeSentSdkController.shared.clientSecret = "XXXXXXXXXXXXXXXXXXXX-XXXXXXXXXXXXXX"
        
     }
 
@@ -23,7 +23,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func paymentAction(_ sender: Any) {
-        LetMeSentSdkController.shared.setupWithdrawInfo(payer: "letmesent", amount: 100, currency: "USD", successUrl: "http://localhost/ecommerce/example-success", cancelUrl: "http://localhost/ecommerce/public/")
+        LetMeSentSdkController.shared.setupWithdrawInfo(payer: "letmesent", amount: 100, currency: "USD", successUrl: "http://XXXXXXX/ecommerce/example-success", cancelUrl: "http://localhost/ecommerce/public/")
          LetMeSentSdkController.shared.presentPayment()
     }
     
